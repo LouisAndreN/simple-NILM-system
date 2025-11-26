@@ -14,6 +14,7 @@ This system is deployed in a japanese residence but can also be adapted for indu
 - Set of capacitors
 - Male plug and female plug JP type
 - AWG14 cables
+- Multimeter
 
 # Future features
 

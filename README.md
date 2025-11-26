@@ -6,7 +6,7 @@ This system is deployed in a japanese residence but can also be adapted for indu
 
 # Used material
 
-- SCT-013 5A/1V
+- SCT-013 5A/1V (for first tests) and SCT-013 30A/1V
 - ADS1115
 - Adafruit Jack plug TRRS
 - ESP32 S3 R16N8 (or ESP32-WROOM-32E)
@@ -14,3 +14,7 @@ This system is deployed in a japanese residence but can also be adapted for indu
 - Set of capacitors
 - Male plug and female plug JP type
 - AWG14 cables
+
+# Future features
+
+Some devices can be tracked but because of the relative low precision of the ADS1115, the system needs to be improved with an audio card 48kHz to get more harmonics to detect specific devices such as induction heater.

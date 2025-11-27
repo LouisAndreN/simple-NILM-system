@@ -10,16 +10,16 @@ This system is deployed in a japanese residence but can also be adapted for indu
 - ADS1115
 - Adafruit 3.5mm TRRS jack breakout
 - ESP32 S3 R16N8 (or ESP32-WROOM-32E)
-- 2× 10kΩ resistors (bias)
-- 1× 1kΩ resistor (series)
+- 3× 10kΩ resistors (divider + alias)
 - 1× 100Ω resistor (protection)
 - 1× 10µF capacitor (coupling)
-- 2× 100nF capacitors (filtering + decoupling)
+- 1× 470nF capacitor (filtering + decoupling)
 - Male plug and female plug JP type
 - AWG14 cables
 - Proster multimeter
 
 See `docs/hardware_schematic.pdf` for complete circuit.
+<img width="1680" height="755" alt="image" src="https://github.com/user-attachments/assets/7fce764c-8b88-43d0-b85d-26f3175560d3" />
 
 
 The SCT-013 current sensor connects via a 3.5mm TRRS jack.

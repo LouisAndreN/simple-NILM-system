@@ -1,17 +1,20 @@
 #include <Wire.h>
 #include <Adafruit_ADS1X15.h>
 #include <Preferences.h>
+#include <SD.h>
+#include <SPI.h>
 
 /* 
 ESP32 + ADS1115 + SCT-013
 Calibration automatique basée sur:
     I_known = P / V
-Tu modifies juste knownPower_W au début.
+Enregistrement CSV sur carte SD
 */
 
 // ========= CALIBRATION SETTINGS ==========
-float knownPower_W = 60.0f;      
-float mainsVoltage_V = 100.0f;   // Japan -> 100V
+float knownCurrent_I = 0.35f;      // courant de référence
+float mainsVoltage_V = 100.0f;     // tension secteur
+const int SD_CS_PIN = 5;           // CS de la carte SD
 // ==============================================
 
 Adafruit_ADS1115 ads;
@@ -30,12 +33,15 @@ float measure_vrms(int samples);
 float measure_irms();
 void autoCalibration();
 
+File csvFile;
+
+unsigned long t0_start;
 
 void setup() {
   Serial.begin(115200);
   delay(300);
 
-  Serial.println("\n=== ESP32 SCT-013 RMS Monitor (Auto Calibration) ===");
+  Serial.println("\n=== ESP32 SCT-013 RMS Monitor (Auto Calibration + CSV) ===");
 
   if (!ads.begin()) {
     Serial.println("ERROR: ADS1115 undetected !");
@@ -45,30 +51,61 @@ void setup() {
 
   prefs.begin(PREF_NAMESPACE, false);
 
-  // Load factor if exists
-  if (prefs.isKey(PREF_KEY)) {
-    calibrationFactor = prefs.getFloat(PREF_KEY, calibrationFactor);
-    Serial.print("Loaded calibration factor = ");
-    Serial.println(calibrationFactor, 6);
+  // Carte SD
+  if (!SD.begin(SD_CS_PIN)) {
+    Serial.println("ERROR: SD card not detected!");
   } else {
-    Serial.println("No saved calibration: running AUTO calibration...");
-    autoCalibration();
+    Serial.println("SD card initialized.");
+    csvFile = SD.open("/current_log.csv", FILE_WRITE);
+    if (csvFile) {
+      csvFile.println("Timestamp_ms,IRMS_A"); // entête CSV
+      csvFile.flush();
+    }
   }
 
+  // Auto calibration à chaque démarrage
+  autoCalibration();
+
+  // Mesure finale avec le nouveau facteur
+  float measuredCurrent = measure_irms();
+  Serial.print("Final calibration factor = ");
+  Serial.println(calibrationFactor, 6);
+  Serial.print("Measured IRMS = ");
+  Serial.print(measuredCurrent, 6);
+  Serial.println(" A");
+
   Serial.println("System ready.");
+
+　t0_start = millis();
+    
+}
+
+float measure_irms_with_time(unsigned long &time_ms) {
+    unsigned long t_start = millis();   // début mesure
+    float irms = measure_irms();
+    unsigned long t_end = millis();     // fin mesure
+    time_ms = ((t_start + t_end) / 2) - t0_start;  // temps relatif depuis début
+    return irms;
 }
 
 void loop() {
-  static uint32_t t0 = millis();
-  if (millis() - t0 >= 2000) {
-    float i = measure_irms();
-    Serial.print("I_rms = ");
-    Serial.print(i, 5);
-    Serial.println(" A");
-    t0 = millis();
-  }
-}
+    static unsigned long lastMillis = 0;
+    unsigned long currentMillis = millis();
 
+    if (currentMillis - lastMillis >= 2000) { // toutes les 2 secondes
+        unsigned long measureTime;
+        float i = measure_irms_with_time(measureTime);
+
+        Serial.print("t = ");
+        Serial.print(measureTime / 1000.0, 3); // secondes
+        Serial.print(" s; ");
+        Serial.print("I_rms = ");
+        Serial.print(i, 5);
+        Serial.println(" A");
+
+        lastMillis = currentMillis;
+    }
+}
 
 // ---- RMS CALC ----
 float measure_vrms(int samples) {
@@ -82,29 +119,22 @@ float measure_vrms(int samples) {
   return sqrt(sumsq / samples);
 }
 
-
 // ---- IRMS ----
 float measure_irms() {
   float vrms = measure_vrms(SAMPLES);
   return vrms * calibrationFactor;
 }
 
-
 // ---- AUTO CALIBRATION ----
 void autoCalibration() {
   Serial.println("=== Auto Calibration Started ===");
-
-  float I_known = knownPower_W / mainsVoltage_V;
-  Serial.print("Known load power = ");
-  Serial.print(knownPower_W);
-  Serial.println(" W");
 
   Serial.print("Line voltage = ");
   Serial.print(mainsVoltage_V);
   Serial.println(" V");
 
   Serial.print("Expected I_known = ");
-  Serial.print(I_known, 6);
+  Serial.print(knownCurrent_I, 6);
   Serial.println(" A");
 
   Serial.println("Measuring Vrms...");
@@ -114,14 +144,12 @@ void autoCalibration() {
   Serial.print(vrms * 1000.0f, 4);
   Serial.println(" mV");
 
-  float newFactor = I_known / vrms;
+  calibrationFactor = knownCurrent_I / vrms;
 
-  calibrationFactor = newFactor;
+  // Sauvegarde dans NVS
   prefs.putFloat(PREF_KEY, calibrationFactor);
 
   Serial.print("New calibration factor = ");
   Serial.println(calibrationFactor, 6);
-
-  Serial.println("Saved in NVS.");
   Serial.println("=== Auto Calibration Done ===");
 }

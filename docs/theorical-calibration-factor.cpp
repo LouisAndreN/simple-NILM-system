@@ -9,16 +9,16 @@ Z_Rseries = 100 Ω
 Z_ADC_A0 ≈ 1-10 MΩ (really high)
 Z_ADC_A1 ≈ 1-10 MΩ (really high)
 
-// Impedance VREF to GND (R2 + C_VREF in serial)
+// VREF to GND impedance (R2 + C_VREF in serial)
 Z_VREF_to_GND ≈ R2 + Z_C_VREF ≈ 41.8 kΩ
 
-// Impedance Thevenin at VREF
+// Thevenin impedance at VREF
 Z_thevenin = R1 || Z_VREF_to_GND
 Z_thevenin = 10k || 41.8k
 Z_thevenin = (10k × 41.8k) / (10k + 41.8k)
 Z_thevenin = 418k / 51.8k ≈ 8.07 kΩ
 
-// Impedance path A0 from VREF
+// Path A0 from VREF impedance
 Z_to_A0 = Rpull + (Rseries || Z_C2 || Z_ADC_A0)
 
 // Z_C2 >> Rseries
@@ -50,7 +50,7 @@ V_VREF_AC = 417 × 0.753 = 314 mV RMS
 // Voltage at A0 (via Rpull+Rseries)
 // Divider Rpull/(Rpull+Rseries) from VREF
 
-// Between VREF and Junction B
+// Impedance between VREF and Junction B
 Z_at_B = Rseries || Z_C2 || Z_ADC_A0 ≈ Rseries = 100 Ω
 
 // Divider :
@@ -59,7 +59,7 @@ V_B / V_VREF = 100 / (1000 + 100) = 0.091
 
 V_B = 314 mV × 0.091 = 28.6 mV
 
-// From B to A0
+// Impedance from B to A0
 Z_ADC_A0 >> Rseries => V_A0 ≈ V_B = 28.6 mV RMS
 
 // Voltage at A1 (VREF)
@@ -91,6 +91,6 @@ V_VREF_AC_real = 314 mV × 0.239 = 75 mV
 V_A1 ≈ 75 mV
 // Signal at A0 through Rpull/Rseries
 V_A0 = 75 mV × 0.091 = 6.8 mV
-// Differential A1 - A0
+// Differential measure A1 - A0
 V_diff = 75 - 6.8 = 68 mV // vs 62 mV = real measure of electric kettle
 => Ratio = 1.1

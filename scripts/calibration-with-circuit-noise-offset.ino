@@ -2,26 +2,22 @@
 #include <Adafruit_ADS1X15.h>
 #include <Preferences.h>
 
-/* 
-ESP32 + ADS1115 + SCT-013
-Calibration automatique basée sur:
-    I_known = P / V
-Modifié pour recalibrer à chaque démarrage et afficher IRMS
-*/
 
 // ========= CALIBRATION SETTINGS ==========
-float knownCurrent_I = 0.35f;      // courant de référence
-float mainsVoltage_V = 100.0f;     // tension secteur
+float knownPower_P = 1250.0f;      // power reference
+float mainsVoltage_V = 100.0f;     // electrical network voltage
 // ==============================================
 
 Adafruit_ADS1115 ads;
 Preferences prefs;
 
-const float ADS_LSB = 2.048f / 32768.0f; 
-const int SAMPLES = 1600;
-const int SAMPLE_DELAY_US = 1150;
+const float ADS_LSB = 4.096f / 32768.0f;  // GAIN_ONE
+const int SAMPLES_CALIBRATION = 860;
+const int SAMPLES_MONITORING = 200;
 
 float calibrationFactor = 5.0f;
+float offsetCurrent = 0.0f;
+
 const char* PREF_KEY = "sct_factor";
 const char* PREF_NAMESPACE = "sct_conf";
 const float IGNORE_THRESHOLD_A = 0.001f;

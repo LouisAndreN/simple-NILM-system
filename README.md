@@ -32,6 +32,8 @@ See `docs/schematic-circuit.png` for complete circuit.
 
 The SCT-013 current sensor connects via a 3.5mm TRRS jack.
 
+# Status
+- Dashboard for visualization in progress
 
 ## Future features
 

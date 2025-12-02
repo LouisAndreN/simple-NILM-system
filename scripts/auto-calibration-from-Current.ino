@@ -2,13 +2,6 @@
 #include <Adafruit_ADS1X15.h>
 #include <Preferences.h>
 
-/* 
-ESP32 + ADS1115 + SCT-013
-Calibration automatique basée sur:
-    I_known = P / V
-Modifié pour recalibrer à chaque démarrage et afficher IRMS
-*/
-
 // ========= CALIBRATION SETTINGS ==========
 float knownCurrent_I = 0.35f;      // courant de référence
 float mainsVoltage_V = 100.0f;     // tension secteur

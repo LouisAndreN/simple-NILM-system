@@ -1,6 +1,6 @@
-# Simple NILM (Non-Intrusive Load Monitoring) System Prototype for Energy Management System
+# Simple Energy Management System prototype with NILM (Non-Intrusive Load Monitoring) System
 
-This project provides a full end-to-end Non-Intrusive Load Monitoring (NILM) system designed for the Japanese electrical environment (100V, 50/60Hz).
+This project provides a full end-to-end Energy Management System, using  Non-Intrusive Load Monitoring (NILM) system designed for the Japanese electrical environment (100V, 50/60Hz).
 It integrates custom low-cost hardware, real household data, and lightweight machine learning models to estimate appliance-level energy usage in real time.
 
 The goal is to provide an accessible and practical system for monitoring household energy usage, detecting anomalies, and predicting future consumption patterns — with a strong focus on real-world deployment rather than academic demonstration.

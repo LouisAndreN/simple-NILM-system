@@ -51,8 +51,8 @@ Z_parallel_VREF = 10k || 33.3k || 1.1k // = Z_th || Z_to_A0
                 = 8459000 / 8790 
                 ≈ 962 Ω
 
-Z_total = Z_C1 + Z_parallel_VREF
-        = 318 + 962 = 1280 Ω
+Z_total = R_burden + Z_C1 + Z_parallel_VREF
+        = 33 + 318 + 962 = 1313 Ω
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
@@ -63,10 +63,10 @@ Z_total = Z_C1 + Z_parallel_VREF
 // Voltage at VREF (AC) :
 // Divider Z_C1 / Z_parallel
 VREF_before_filter / V_SCT = Z_parallel_VREF / Z_total
-VREF_before_filter / V_SCT = 962 / 1280 = 0.752
+VREF_before_filter / V_SCT = 962 / 1313 = 0.733
 
 V_SCT = 417 mV // electric kettle 1250W with AC 100V => 12.5A on SCT-013-030 (12.5/30 = 0.417V)
-VREF_before_filter = 417 × 0.752 = 314 mV RMS
+VREF_before_filter = 417 × 0.733 = 306 mV RMS
 // Part of the signal is "eaten" by the capacitor C1
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -88,8 +88,8 @@ VREF_after_filter / VREF_before_filter ≈ 10k / 33.3k = 0.3
 
 // Apply high-pass filter to signal
 VREF = VREF_before_filter × 0.30
-VREF = 314 mV × 0.30
-VREF = 94 mV RMS = V_A1 // Z_ADC_A1 >> Z_th_VREF
+VREF = 306 mV × 0.30
+VREF = 92 mV RMS = V_A1 // Z_ADC_A1 >> Z_th_VREF
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
@@ -106,14 +106,13 @@ Z_B = Z_Rseries || Z_C2 || Z_ADC_A0 ≈ Z_Rseries = 100 Ω
 // Divider :
 V_B / VREF = Z_B / (Z_Rpull + Z_B)
 V_B / VREF = 100 / (1000 + 100) = 0.091
-=> V_B = 94 mV × 0.091 = 8.5 mV RMS = V_A0 // Z_ADC_A0 >> Z_Rseries
+=> V_B = 92 mV × 0.091 = 8.4 mV RMS = V_A0 // Z_ADC_A0 >> Z_Rseries
 
 
 ///////////////////////// Differential measure A1 - A0 ////////////////////// 
 V_diff = V_A1 - V_A0
-V_diff = 94 mV - 8.5 mV = 285.4 mV RMS
-V_diff = 94 - 8.5 = 85.5 mV RMS // for 1250W electric kettle load
-// vs 62 mV RMS measured => Ratio = 85.5 / 62 = 1.38 
+V_diff = 92 - 8.4 = 85.6 mV RMS // for 1250W electric kettle load
+// vs 62 mV RMS measured => Ratio = 85.6 / 62 = 1.38 
   
 // Theorical system sensibility :
-// S = 85.5 mV / 1250 W = 68.4 µV/W
+// S = 85.6 mV / 1250 W = 68.4 µV/W

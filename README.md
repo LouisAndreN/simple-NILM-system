@@ -41,9 +41,9 @@ The current components allows to get until the 8th harmonics, which can be limit
 # How to run
 
 - Install the project on your computer
-- Run `streamlit run <path_to_project_folder>/EMS-dashboard.py`
-- The interactive dashboard should open in your browser
-- Follow instructions to setup the system (calibration without load, with load reference, add new device to library, ...)
+- Upload the `main.cpp` program in the ESP32
+- Run `streamlit run <path_to_project_folder>/EMS-dashboard.py` (=> the interactive dashboard should open in your browser)
+- Follow instructions to setup the system (calibration without load, with load reference, launch monitoring system)
 
 ## Future features
 

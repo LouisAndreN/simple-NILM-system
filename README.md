@@ -7,7 +7,7 @@ The goal is to provide an accessible and practical prottype for monitoring house
 
 **Key functionnalities :**
 - Forecasting realtime household consumption
-- From custom analog conditioning circuit design to dashboard for live monitoring and historical analysis
+- From custom analog circuit design to dashboard (Streamlit) for live monitoring and historical analysis
 - Edge preprocessing on ESP32
 - Support for Japanese standards (30A breaker, 100V, 50/60Hz)
 

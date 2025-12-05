@@ -17,11 +17,11 @@ The goal is to provide an accessible and practical prottype for monitoring house
 - 16-bit ADC ADS1115 (860 SPS)
 - Adafruit 3.5mm TRRS jack breakout
 - ESP32-WROOM-32E
-- 2× 10kΩ resistors (divider)
-- 1× 1kΩ resistor (anti-aliasing filter)
-- 1× 100Ω resistor (protection)
-- 1× 10µF capacitor (coupling)
-- 1× 470nF capacitor (anti-aliasing filter)
+- 2x 10kΩ resistors (divider)
+- 1x 1kΩ resistor (anti-aliasing filter)
+- 1x 100Ω resistor (protection)
+- 1x 10µF capacitor (coupling)
+- 1x 470nF capacitor (anti-aliasing filter)
 - Male plug and female plug JP type
 - AWG14 cables (can use AWG16 cables)
 - Proster multimeter with clamper
